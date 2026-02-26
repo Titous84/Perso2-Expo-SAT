@@ -325,6 +325,29 @@ class UserService
         return true; // Aucun id n'est valide, donc ils sont TOUS invalides.
     }
 
+
+    /**
+     * Réinitialise les données de l'évènement pour préparer une nouvelle édition.
+     * @author Nathan Reyes
+     * @return Result
+     */
+    public function reset_event_data(): Result
+    {
+        try {
+            $success = $this->userRepository->reset_event_data();
+
+            if (!$success) {
+                return new Result(EnumHttpCode::SERVER_ERROR, array("Une erreur est survenue lors de la réinitialisation des données."));
+            }
+
+            return new Result(EnumHttpCode::SUCCESS, array("Les données de fin d'évènement ont été réinitialisées avec succès."), true);
+        } catch (Exception $exception) {
+            $context["http_error_code"] = $exception->getCode();
+            $this->logHandler->critical($exception->getMessage(), $context);
+            return new Result(EnumHttpCode::SERVER_ERROR, array("Une erreur inattendue est survenue lors de la réinitialisation des données."));
+        }
+    }
+
 	/**
 	 * Fonction permettant d'obtenir les utilisateurs activés.
 	 * @author Alex Des Ruisseaux

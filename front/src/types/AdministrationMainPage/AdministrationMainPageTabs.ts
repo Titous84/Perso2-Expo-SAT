@@ -75,7 +75,7 @@ export const ADMINISTRATION_MAIN_PAGE_TABS: AdministrationMainPageTab[] = [
     },
     {
         id: "administrateurs",
-        primaryText: "Administrateurs",
+        primaryText: "Paramètres généraux", // @author Nathan Reyes
         secondaryText: "Ajouter et supprimer des administrateurs et modifier leur mot de passe",
         componentToDisplayInContentZone: AdministratorsListPage,
         icon: ManageAccountsIcon,

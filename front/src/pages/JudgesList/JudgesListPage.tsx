@@ -160,6 +160,48 @@ export default function JudgesListPage() {
         }
     };
 
+
+    /**
+     * Désactive les juges sélectionnés sans les supprimer.
+     * @author Nathan Reyes
+     */
+    const deactivateSelectedJudges = async () => {
+        if (selectedJudgesIds.length === 0) {
+            setSnackbarMessage("Aucun juge n'a été sélectionné pour la désactivation.");
+            setSnackbarMessageType("warning");
+            setIsSnackbarOpen(true);
+            return;
+        }
+
+        try {
+            const jugesSelectionnes = listJudge.filter((judge) => selectedJudgesIds.includes(judge.id));
+
+            await Promise.all(
+                jugesSelectionnes.map((judge) => {
+                    const judgeUpdate: JudgeUpdate = {
+                        id: judge.id,
+                        firstName: judge.firstName,
+                        lastName: judge.lastName,
+                        categoryId: categories.find((element) => element.name === judge.category)?.id ?? 0,
+                        email: judge.email,
+                        activated: false,
+                        blacklisted: judge.blacklisted,
+                    };
+                    return patchJudge(judgeUpdate);
+                })
+            );
+
+            setSnackbarMessage("Les juges sélectionnés ont été désactivés avec succès.");
+            setSnackbarMessageType("success");
+            setIsSnackbarOpen(true);
+            getJudges();
+        } catch (error: any) {
+            setSnackbarMessage(error.message);
+            setSnackbarMessageType("error");
+            setIsSnackbarOpen(true);
+        }
+    };
+
     /**
      * @author Étienne Nadeau
      * Définition de l'affichage des colonnes utilisées dans le tableau de gestion des juges.
@@ -413,6 +455,7 @@ export default function JudgesListPage() {
                             {...props}
                             selectedJudges={listJudge.filter(judge => selectedJudgesIds.includes(judge.id))} // Passer les juges sélectionnés
                             deleteSelectedJudge={deleteSelectedJudges}
+                            deactivateSelectedJudges={deactivateSelectedJudges} // @author Nathan Reyes
                             setSelectedUserId={setSelectedUserId} // Passer la méthode de suppression des juges sélectionnés
                         />
                     ),
