@@ -131,6 +131,25 @@ export default class UserService {
         }
     }
 
+
+    /**
+     * Réinitialise les données de fin d'évènement.
+     * @author Nathan Reyes
+     */
+    public static async resetEventData(): Promise<void> {
+        let response: APIResult<void>;
+        try {
+            response = await APIRequest("administrators/reset-event-data", "POST", true);
+        } catch (error) {
+            console.error("Erreur lors de la réinitialisation des données annuelles :", error);
+            throw new Error("Une erreur est survenue lors de la réinitialisation des données annuelles.");
+        }
+
+        if (response.error) {
+            throw new Error(response.error);
+        }
+    }
+
     /**
      * @author Thomas-gabriel Paquin
      * Permet de recevoir les informations des juges.

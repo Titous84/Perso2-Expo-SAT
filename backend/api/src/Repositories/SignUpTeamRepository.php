@@ -91,7 +91,7 @@ class SignUpTeamRepository extends Repository
                 $verifcationMember = $this->get_member_by_numero_da($team->members[$a]["numero_da"]);
                 if(sizeOf($verifcationMember) == 0){ //
                     //Insertion d'un membre dans la bd
-                    $sql = "INSERT INTO users (first_name, last_name, numero_da, role_id, picture_consent, activated, activation_token) VALUES (:first_name, :last_name, :numero_da, :role_id, :picture_consent, 0, :activation_token)";
+                    $sql = "INSERT INTO users (first_name, last_name, numero_da, role_id, picture_consent, photo_consent_clause, is_anonymous, activated, activation_token) VALUES (:first_name, :last_name, :numero_da, :role_id, :picture_consent, :photo_consent_clause, :is_anonymous, 0, :activation_token)";
     
                     $req = $this->db->prepare($sql);
                     $req->execute(array(
@@ -100,6 +100,12 @@ class SignUpTeamRepository extends Repository
                         "numero_da" => $team->members[$a]['numero_da'],
                         "role_id" => 3,
                         "picture_consent" => $team->members[$a]['pictureConsent'],
+                        // Enregistrer la clause de consentement photo choisie par le participant.
+                        // @author Nathan Reyes
+                        "photo_consent_clause" => $team->members[$a]['photoConsentClause'] ?? "refus_total",
+                        // Enregistrer la préférence d'anonymat du participant.
+                        // @author Nathan Reyes
+                        "is_anonymous" => intval($team->members[$a]['isAnonymous'] ?? 0),
                         "activation_token" => $token[$a]
                     ));
                 }

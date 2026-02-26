@@ -491,12 +491,12 @@ export const TEXTS = {
             }
         },
         administrateurs:{
-            title:"Administrateurs",
+            title:"Paramètres généraux", // @author Nathan Reyes
             /**
              * Administrateurs
              */
             layout1:{
-                layoutName:"Administrateurs",
+                layoutName:"Paramètres généraux", // @author Nathan Reyes
                 link1:"Ajout Administrateur",
                 link2:"Modifier son mot de passe",
             }
