@@ -225,20 +225,22 @@ export default class ParticipantRegistrationPage extends IPage<{}, ParticipantRe
      * Mathieu Sévégny
      */
     handleChangeTeamMemberForm(number:number,key:string,value:any){
-        //Cherche le tableau du type choisi
-        let array : any[] = Array.from(this.state.teamInfo.members);
+        // Modifie le state à partir de la version précédente pour éviter d'écraser
+        // des changements consécutifs dans le même événement (ex: clause + consentement).
+        // @author Nathan Reyes
+        this.setState(prevState => {
+            const array : any[] = Array.from(prevState.teamInfo.members);
 
-        //Cherche la personne dans le tableau
-        let person : any = {...array[number-1]}
-        
-        //Change la valeur de la personne
-        person[key] = value
+            //Cherche la personne dans le tableau
+            let person : any = {...array[number-1]}
 
-        //Modifie la personne dans le tableau
-        array[number-1] = person;
+            //Change la valeur de la personne
+            person[key] = value
 
-        //Modifie le state
-        this.setState(prevState =>{ 
+            //Modifie la personne dans le tableau
+            array[number-1] = person;
+
+            //Applique la modification dans teamInfo
             let teamInfo = Object.assign({}, prevState.teamInfo);
             teamInfo.members = array
             return {teamInfo};
