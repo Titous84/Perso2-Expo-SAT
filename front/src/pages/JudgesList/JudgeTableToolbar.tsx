@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 import { Button, IconButton, Stack, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material';
-import { Add as AddIcon, Delete as DeleteIcon, Send as SendIcon } from '@mui/icons-material';
+import { Add as AddIcon, Delete as DeleteIcon, PersonOff as PersonOffIcon, Send as SendIcon } from '@mui/icons-material';
 import { GridToolbarContainer, GridToolbarColumnsButton, GridToolbarFilterButton, GridToolbarQuickFilter } from '@mui/x-data-grid';
 import { useState } from 'react';
 import Judge from "../../types/judge";
@@ -13,6 +13,7 @@ import Judge from "../../types/judge";
 interface JudgeTableToolbarProps {
     selectedJudges: Judge[];
     deleteSelectedJudge: () => void;
+    deactivateSelectedJudges: () => void; // @author Nathan Reyes
     setSelectedUserId: (id: number | null) => void;
 }
 
@@ -56,7 +57,7 @@ function SendEvaluationGridsButton({ selectedJudges }: { selectedJudges: Judge[]
  * @author Étienne nadeau
  * inspirer d'Antoine Ouellette
  */
-export default function JudgeTableToolbar({ selectedJudges, deleteSelectedJudge, setSelectedUserId }: JudgeTableToolbarProps) {
+export default function JudgeTableToolbar({ selectedJudges, deleteSelectedJudge, deactivateSelectedJudges, setSelectedUserId }: JudgeTableToolbarProps) {
     const navigate = useNavigate(); // Récupère la méthode pour naviguer entre les pages.
     const [openPopup, setOpenPopup] = useState<boolean>(false);
 
@@ -112,6 +113,18 @@ export default function JudgeTableToolbar({ selectedJudges, deleteSelectedJudge,
                     >
                         Créer
                     </Button>
+
+
+                    {/* Bouton pour désactiver les juges absents de l'édition courante */}
+                    {/* @author Nathan Reyes */}
+                    <Tooltip title="Désactiver les juges sélectionnés">
+                        <IconButton
+                            onClick={deactivateSelectedJudges}
+                            disabled={!selectedJudges || selectedJudges.length === 0}
+                        >
+                            <PersonOffIcon fontSize="small" color="warning" />
+                        </IconButton>
+                    </Tooltip>
 
                     {/* Bouton pour supprimer les juges sélectionnées dans le tableau */}
                     <Tooltip title="Confirmer">

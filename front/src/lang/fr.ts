@@ -182,6 +182,15 @@ export const TEXTS = {
             yes:"Oui",
             no:"Non"
         },
+        anonymousRegistration:{
+            label:"Masquer mes informations personnelles (prénom, nom, DA, etc.) dans les listes.", // @author Nathan Reyes
+        },
+        photoConsent:{
+            title:"Consentement à la prise de photos :", // @author Nathan Reyes
+            publication:"J'autorise l'utilisation des photos pour la promotion (site web, médias sociaux, journaux, etc.).", // @author Nathan Reyes
+            internalUse:"J'autorise l'utilisation des photos à des fins internes et pédagogiques.", // @author Nathan Reyes
+            totalRefusal:"Je refuse que des photos soient prises de moi.", // @author Nathan Reyes
+        },
         buttons:{
             addMember:"Ajouter un membre",
             removeMember:"Retirer un membre"

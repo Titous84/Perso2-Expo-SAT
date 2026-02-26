@@ -5,7 +5,7 @@ import React from 'react';
 import { ValidatorForm } from 'react-material-ui-form-validator'
 import TeamMember from '../../types/sign-up/team-member';
 import { MAX_LENGTH_FIRST_NAME, MAX_LENGTH_LAST_NAME } from '../../utils/constants';
-import { FormControl,FormControlLabel,FormLabel, Grid, Paper, Radio, RadioGroup } from '@mui/material';
+import { Checkbox, FormControl,FormControlLabel,FormLabel, Grid, Paper, Radio, RadioGroup } from '@mui/material';
 import styles from "./../../pages/ParticipantRegistration/ParticipantRegistrationPage.module.css";
 import { TextValidator } from 'react-material-ui-form-validator'
 import { INPUT_VARIANT } from '../../utils/muiConstants';
@@ -105,55 +105,43 @@ export default class TeamMemberForm extends React.Component<TeamMemberFormProps>
                         </Grid>
                         <Grid item xs={12} md={12}>
                         <FormControl>
-                            <FormLabel id="demo-controlled-radio-buttons-group">{TEXTS.signup.pictureConsent.label}</FormLabel>
-                            <RadioGroup
-                                name="controlled-radio-buttons-group"
-                                value={this.props.teamMember.pictureConsent}
-                                onChange={(event:any) => {
-
-                                    this.props.handleChangeTeamMember(this.props.number,"pictureConsent", event.target.value)
-                                }}
-                            >
-                                <FormControlLabel value={1} control={<Radio />} label={TEXTS.signup.pictureConsent.yes} />
-                                <FormControlLabel value={0} control={<Radio />} label={TEXTS.signup.pictureConsent.no} />
-                            </RadioGroup>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12} md={12}>
-                        <FormControl>
-                            {/* Sélection de la clause de consentement photo. */}
+                            {/* Sélection de la clause de consentement photo selon les besoins d'ExpoSAT. */}
                             {/* @author Nathan Reyes */}
-                            <FormLabel>Clause de consentement photo</FormLabel>
+                            <FormLabel>{TEXTS.signup.photoConsent.title}</FormLabel>
                             <RadioGroup
                                 name={`photo-consent-clause-${this.props.number}`}
                                 value={this.props.teamMember.photoConsentClause}
                                 onChange={(event:any) => {
-                                    this.props.handleChangeTeamMember(this.props.number, "photoConsentClause", event.target.value)
+                                    const clauseSelectionnee = event.target.value;
+
+                                    // Synchronise l'ancien champ pictureConsent avec la clause choisie.
+                                    // @author Nathan Reyes
+                                    const consentementPhoto = clauseSelectionnee === "refus_total" ? 0 : 1;
+                                    this.props.handleChangeTeamMember(this.props.number, "photoConsentClause", clauseSelectionnee)
+                                    this.props.handleChangeTeamMember(this.props.number, "pictureConsent", consentementPhoto)
                                 }}
                             >
-                                <FormControlLabel value={"publication"} control={<Radio />} label={"Publication (site web, médias sociaux, promotion)"} />
-                                <FormControlLabel value={"usage_interne"} control={<Radio />} label={"Usage interne uniquement"} />
-                                <FormControlLabel value={"refus_total"} control={<Radio />} label={"Refus total"} />
+                                <FormControlLabel value={"publication"} control={<Radio />} label={TEXTS.signup.photoConsent.publication} />
+                                <FormControlLabel value={"usage_interne"} control={<Radio />} label={TEXTS.signup.photoConsent.internalUse} />
+                                <FormControlLabel value={"refus_total"} control={<Radio />} label={TEXTS.signup.photoConsent.totalRefusal} />
                             </RadioGroup>
                         </FormControl>
                         </Grid>
 
                         <Grid item xs={12} md={12}>
-                        <FormControl>
-                            {/* Indique si le participant souhaite apparaître anonymement. */}
+                            {/* Option d'inscription anonyme demandée pour les listes. */}
                             {/* @author Nathan Reyes */}
-                            <FormLabel>Affichage anonyme des informations personnelles</FormLabel>
-                            <RadioGroup
-                                name={`anonymous-member-${this.props.number}`}
-                                value={this.props.teamMember.isAnonymous}
-                                onChange={(event:any) => {
-                                    this.props.handleChangeTeamMember(this.props.number, "isAnonymous", Number(event.target.value))
-                                }}
-                            >
-                                <FormControlLabel value={1} control={<Radio />} label={"Oui, masquer mes informations (prénom, nom, DA)"} />
-                                <FormControlLabel value={0} control={<Radio />} label={"Non, afficher mes informations"} />
-                            </RadioGroup>
-                        </FormControl>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={this.props.teamMember.isAnonymous === 1}
+                                        onChange={(event:any) => {
+                                            this.props.handleChangeTeamMember(this.props.number, "isAnonymous", event.target.checked ? 1 : 0)
+                                        }}
+                                    />
+                                }
+                                label={TEXTS.signup.anonymousRegistration.label}
+                            />
                         </Grid>
 
                     </Grid>

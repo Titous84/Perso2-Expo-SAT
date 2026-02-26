@@ -26,6 +26,8 @@
 - `backend/api/config/routes.php`
 - `front/src/api/users/userService.ts`
 - `front/src/pages/AdministratorsList/AdministratorsListPage.tsx`
+- `front/src/pages/JudgesList/JudgesListPage.tsx`
+- `front/src/pages/JudgesList/JudgeTableToolbar.tsx`
 - `front/src/types/AdministrationMainPage/AdministrationMainPageTabs.ts`
 - `front/src/lang/fr.ts`
 
@@ -33,4 +35,6 @@
 - Ajout d'une route API admin pour lancer la réinitialisation annuelle.
 - Ajout d'une méthode service/référentiel backend pour vider les données évènementielles.
 - Ajout d'un bouton dans la page administrateurs pour déclencher la réinitialisation.
+- Conservation des juges lors de la réinitialisation annuelle (ils ne sont plus supprimés).
+- Ajout d'une option pour désactiver des juges sélectionnés dans la page de gestion des juges.
 - Renommage de l'onglet « Administrateurs » en « Paramètres généraux ».

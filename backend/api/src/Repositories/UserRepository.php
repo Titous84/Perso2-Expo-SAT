@@ -293,10 +293,9 @@ class UserRepository extends Repository
                 "DELETE FROM users_teams",
                 "DELETE FROM teams_contact_person",
                 "DELETE FROM teams",
-                "DELETE FROM categories_judge",
-                "DELETE FROM acquaintance_conflict",
-                "DELETE FROM judge",
-                "DELETE FROM users WHERE role_id IN (1, 3)",
+                // On conserve les juges d'une année à l'autre et on retire seulement les participants.
+                // @author Nathan Reyes
+                "DELETE FROM users WHERE role_id = 3",
                 "UPDATE info_events SET event_processed = 0"
             ];
 
