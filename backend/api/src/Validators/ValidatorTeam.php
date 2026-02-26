@@ -145,6 +145,20 @@ class ValidatorTeam extends Validator
                     if ($this->is_empty($team['members'][$a]['numero_da'])) {
                         $messages[] = "Le numéro DA du membre est obligatoire : " . $team['members'][$a]['numero_da'];
                     }
+
+                    // Vérification de la clause de consentement photo.
+                    // @author Nathan Reyes
+                    $photoConsentClause = $team['members'][$a]['photoConsentClause'] ?? null;
+                    if ($photoConsentClause === null || !in_array($photoConsentClause, ["publication", "usage_interne", "refus_total"], true)) {
+                        $messages[] = "La clause de consentement photo est invalide pour le membre : " . $team['members'][$a]['numero_da'];
+                    }
+
+                    // Vérification de l'option d'anonymat du membre.
+                    // @author Nathan Reyes
+                    $isAnonymous = $team['members'][$a]['isAnonymous'] ?? null;
+                    if (!in_array($isAnonymous, [0, 1, "0", "1"], true)) {
+                        $messages[] = "La valeur d'anonymat est invalide pour le membre : " . $team['members'][$a]['numero_da'];
+                    }
                 }
             }
         }
