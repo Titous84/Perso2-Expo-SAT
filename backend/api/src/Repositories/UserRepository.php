@@ -276,6 +276,43 @@ class UserRepository extends Repository
         }
     }
 
+
+    /**
+     * Réinitialise les données de fin d'évènement sans supprimer les administrateurs.
+     * @author Nathan Reyes
+     * @return bool
+     */
+    public function reset_event_data(): bool
+    {
+        try {
+            // Supprimer les liens et données opérationnelles de l'évènement.
+            // @author Nathan Reyes
+            $queries = [
+                "DELETE FROM criteria_evaluation",
+                "DELETE FROM evaluation",
+                "DELETE FROM users_teams",
+                "DELETE FROM teams_contact_person",
+                "DELETE FROM teams",
+                "DELETE FROM categories_judge",
+                "DELETE FROM acquaintance_conflict",
+                "DELETE FROM judge",
+                "DELETE FROM users WHERE role_id IN (1, 3)",
+                "UPDATE info_events SET event_processed = 0"
+            ];
+
+            foreach ($queries as $query) {
+                $stmt = $this->db->prepare($query);
+                $stmt->execute();
+            }
+
+            return true;
+        } catch (PDOException $exception) {
+            $context["http_error_code"] = $exception->getCode();
+            $this->logHandler->critical($exception->getMessage(), $context);
+            return false;
+        }
+    }
+
 	/**
 	 * Fonction qui permet d'obtenir tous les juges et les séparer en blacklisted ou non.
 	 * @author Thomas-Gabriel Paquin

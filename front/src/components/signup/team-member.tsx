@@ -119,6 +119,43 @@ export default class TeamMemberForm extends React.Component<TeamMemberFormProps>
                             </RadioGroup>
                             </FormControl>
                         </Grid>
+                        <Grid item xs={12} md={12}>
+                        <FormControl>
+                            {/* Sélection de la clause de consentement photo. */}
+                            {/* @author Nathan Reyes */}
+                            <FormLabel>Clause de consentement photo</FormLabel>
+                            <RadioGroup
+                                name={`photo-consent-clause-${this.props.number}`}
+                                value={this.props.teamMember.photoConsentClause}
+                                onChange={(event:any) => {
+                                    this.props.handleChangeTeamMember(this.props.number, "photoConsentClause", event.target.value)
+                                }}
+                            >
+                                <FormControlLabel value={"publication"} control={<Radio />} label={"Publication (site web, médias sociaux, promotion)"} />
+                                <FormControlLabel value={"usage_interne"} control={<Radio />} label={"Usage interne uniquement"} />
+                                <FormControlLabel value={"refus_total"} control={<Radio />} label={"Refus total"} />
+                            </RadioGroup>
+                        </FormControl>
+                        </Grid>
+
+                        <Grid item xs={12} md={12}>
+                        <FormControl>
+                            {/* Indique si le participant souhaite apparaître anonymement. */}
+                            {/* @author Nathan Reyes */}
+                            <FormLabel>Affichage anonyme des informations personnelles</FormLabel>
+                            <RadioGroup
+                                name={`anonymous-member-${this.props.number}`}
+                                value={this.props.teamMember.isAnonymous}
+                                onChange={(event:any) => {
+                                    this.props.handleChangeTeamMember(this.props.number, "isAnonymous", Number(event.target.value))
+                                }}
+                            >
+                                <FormControlLabel value={1} control={<Radio />} label={"Oui, masquer mes informations (prénom, nom, DA)"} />
+                                <FormControlLabel value={0} control={<Radio />} label={"Non, afficher mes informations"} />
+                            </RadioGroup>
+                        </FormControl>
+                        </Grid>
+
                     </Grid>
                 </Paper>
         );
